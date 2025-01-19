@@ -36,11 +36,27 @@
         * {
             pointer-events: none;
         }
+
+        /* Warning message styling */
+        .warning {
+            border: 2px solid red;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #222;
+            z-index: 2;
+            position: relative;
+        }
     </style>
 </head>
 <body>
     <!-- Display the jumpscare image -->
-    <img src="Jumpscare Picture Scary.jpeg" alt="Jumpscare Image">
+    <img src="Jumpscare.jpeg" alt="Jumpscare Image">
+
+    <div class="warning">
+        <h1>⚠️ WARNING ⚠️</h1>
+        <p>This is a simulated screen freeze and extreme lag for educational and testing purposes only.</p>
+        <p>Your device is temporarily locked and will experience severe lag.</p>
+    </div>
 
     <script>
         // ==== Glitchy Background Sounds ====
